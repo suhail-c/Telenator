@@ -54,7 +54,7 @@ async def main():
 
     raw.functions.account.DeleteAccount = raw.functions.Ping
 
-    await app.start(use_qr=True)
+    await app.start(use_qr=False)
 
     async for _ in app.get_dialogs(limit=100):
         pass

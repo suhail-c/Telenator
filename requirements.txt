@@ -7,3 +7,5 @@ psutil
 tgcrypto
 qrcode
 cryptography
+aiosqlite
+uvloop
