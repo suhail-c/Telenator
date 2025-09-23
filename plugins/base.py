@@ -228,11 +228,11 @@ async def _status(client: Client, message: Message):
     result += f"└─<b>RAM usage:</b> <code>{ram_usage}MB</code>\n\n"
 
     cursor = await client.storage.conn.execute("SELECT (SELECT COUNT(id) FROM peers) AS peer_count, (SELECT COUNT(username) FROM usernames) AS username_count")
-    result = await cursor.fetchone()
-    known_peers, known_usernames = result
+    cursor = await cursor.fetchone()
+    known_peers, known_usernames = cursor
     session_size = Path(f"{client.name}.session").stat().st_size
 
-    result += f"<b>Session info:</b>\n"
+    result += "<b>Session info:</b>\n"
     result += f"├─<b>Known peers:</b> <code>{known_peers:,}</code>\n"
     result += f"├─<b>Known usernames:</b> <code>{known_usernames:,}</code>\n"
     result += f"└─<b>Session size:</b> <code>{format_bytes(session_size)}</code>"
