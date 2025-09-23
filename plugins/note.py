@@ -13,7 +13,7 @@ from utils.scripts import get_prefix
 
 @Client.on_message(~filters.scheduled & command(["snote"]) & filters.me & ~filters.forwarded)
 async def snote_handler(_, message: Message):
-    args = message.text.split(maxsplit=1)
+    args = message.text.split(maxsplit=2)
 
     if len(args) < 2:
         return await message.edit(
@@ -21,41 +21,14 @@ async def snote_handler(_, message: Message):
         )
 
     note_name = args[1]
-    medias = []
 
-    if message.reply_to_message.media_group_id:
-        for i in await message.reply_to_message.get_media_group():
-            file_bytes = await i.download(in_memory=True)
-            media_obj = getattr(i, i.media.value, None)
-
-            medias.append(
-                dict(
-                    type=i.media.value,
-                    caption=i.content.html,
-                    base64=base64.b64encode(file_bytes.getvalue()).decode("utf-8"),
-                    file_name=getattr(media_obj, "file_name", None),
-                )
-            )
-    elif message.reply_to_message.media:
-        file_bytes = await message.reply_to_message.download(in_memory=True)
-        media_obj = getattr(message.reply_to_message, message.reply_to_message.media.value, None)
-
-        medias.append(
-            dict(
-                type=message.reply_to_message.media.value,
-                caption=message.reply_to_message.content.html,
-                base64=base64.b64encode(file_bytes.getvalue()).decode("utf-8"),
-                file_name=getattr(media_obj, "file_name", None),
-            )
-        )
-
-    note = dict(
-        is_media_group=bool(message.reply_to_message.media_group_id),
-        is_media=bool(message.reply_to_message.media),
-        content=message.reply_to_message.content.html,
-        medias=medias,
-    )
-
+    if len(args) == 3:
+        note = args[2]
+    
+    elif message.reply_to_message:
+        note = (message.reply_to_message.text or message.reply_to_message.caption or None)
+        
+    if not note: return
     db.set("core.notes", f"note_{note_name}", note)
 
     await message.edit(f"<b>Successfully saved note:</b> <code>{note_name}</code>")
@@ -77,55 +50,7 @@ async def note_handler(_, message: Message):
     if not note:
         return await message.edit(f"<b>No note with name:</b> <code>{note_name}</code>")
 
-    is_media_group = note["is_media_group"]
-    is_media = note["is_media"]
-
-    await message.delete()
-
-    if is_media_group:
-        input_media_group = []
-
-        for media in note["medias"]:
-            content_type = enums.MessageMediaType(media["type"])
-            content_bytes = BytesIO(base64.b64decode(media["base64"]))
-            content_bytes.name = media["file_name"]
-
-            if content_type == enums.MessageMediaType.PHOTO:
-                input_media_group.append(types.InputMediaPhoto(content_bytes, media["caption"]))
-            elif content_type == enums.MessageMediaType.VIDEO:
-                input_media_group.append(types.InputMediaVideo(content_bytes, media["caption"]))
-            elif content_type == enums.MessageMediaType.DOCUMENT:
-                input_media_group.append(types.InputMediaDocument(content_bytes, media["caption"]))
-            elif content_type == enums.MessageMediaType.AUDIO:
-                input_media_group.append(types.InputMediaAudio(content_bytes, media["caption"]))
-
-        return await message.reply_media_group(media=input_media_group, quote=False)
-    elif is_media:
-        for media in note["medias"]:
-            content_type = enums.MessageMediaType(media["type"])
-            content_bytes = BytesIO(base64.b64decode(media["base64"]))
-            content_bytes.name = media["file_name"]
-
-            if content_type == enums.MessageMediaType.STICKER:
-                await message.reply_sticker(content_bytes)
-            elif content_type == enums.MessageMediaType.VIDEO_NOTE:
-                return await message.reply_video_note(content_bytes)
-            elif content_type == enums.MessageMediaType.VOICE:
-                return await message.reply_voice(content_bytes, caption=media["caption"])
-            elif content_type == enums.MessageMediaType.ANIMATION:
-                return await message.reply_animation(content_bytes, caption=media["caption"])
-            elif content_type == enums.MessageMediaType.DOCUMENT:
-                return await message.reply_document(
-                    content_bytes, caption=media["caption"], file_name=media["file_name"]
-                )
-            elif content_type == enums.MessageMediaType.AUDIO:
-                return await message.reply_audio(content_bytes, caption=media["caption"])
-            elif content_type == enums.MessageMediaType.PHOTO:
-                return await message.reply_photo(content_bytes, caption=media["caption"])
-            elif content_type == enums.MessageMediaType.VIDEO:
-                return await message.reply_video(content_bytes, caption=media["caption"])
-
-    await message.reply(note["content"])
+    await message.edit(note)
 
 
 @Client.on_message(~filters.scheduled & command(["dnote"]) & filters.me & ~filters.forwarded)
