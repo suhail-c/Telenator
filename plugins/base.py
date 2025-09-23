@@ -190,9 +190,9 @@ async def _status(client: Client, message: Message):
     )
     repo_link = "https://github.com/suhail-c/Telenator"
 
-    result = (
+    result = 
         f"<emoji id=5219903664428167948>🤖</emoji> <a href='{repo_link}'>Telenator-Userbot</a> / "
-    )
+    
     result += f"<a href='{repo_link}/commit/{current_hash}'>#{current_hash[:7]} ({current_version})</a>\n\n"
     result += f"<b>Pyrogram:</b> <code>{pyrogram.__version__}</code>\n"
     result += f"<b>Python:</b> <code>{sys.version}</code>\n"
