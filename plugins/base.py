@@ -233,7 +233,7 @@ async def _status(client: Client, message: Message):
     known_peers, known_usernames = result
     session_size = Path(f"{client.name}.session").stat().st_size
 
-    result += "<b>Session info:</b>\n"
+    result += f"<b>Session info:</b>\n"
     result += f"├─<b>Known peers:</b> <code>{known_peers:,}</code>\n"
     result += f"├─<b>Known usernames:</b> <code>{known_usernames:,}</code>\n"
     result += f"└─<b>Session size:</b> <code>{format_bytes(session_size)}</code>"
