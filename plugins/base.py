@@ -188,15 +188,15 @@ async def _status(client: Client, message: Message):
     current_version = upcoming_version - (
         len(list(git.Repo().iter_commits(f"{current_hash}..{upcoming}")))
     )
-    repo_link = "https://github.com/KurimuzonAkuma/Kurimuzon-Userbot"
+    repo_link = "https://github.com/suhail-c/Telenator"
 
     result = (
-        f"<emoji id=5219903664428167948>🤖</emoji> <a href='{repo_link}'>Kurimuzon-Userbot</a> / "
+        f"<emoji id=5219903664428167948>🤖</emoji> <a href='{repo_link}'>Telenator-Userbot</a> / "
     )
     result += f"<a href='{repo_link}/commit/{current_hash}'>#{current_hash[:7]} ({current_version})</a>\n\n"
     result += f"<b>Pyrogram:</b> <code>{pyrogram.__version__}</code>\n"
     result += f"<b>Python:</b> <code>{sys.version}</code>\n"
-    result += "<b>Dev:</b> <a href='https://t.me/KurimuzonAkuma'>KurimuzonAkuma</a>\n\n"
+    result += "<b>Dev:</b> <a href='https://github.com/suhail-c/'>Suhail</a>\n\n"
 
     if "-a" not in args:
         return await message.edit(

@@ -27,7 +27,7 @@ async def main():
     )
 
     app = CustomClient(
-        "KurimuzonUserbot",
+        "TelenatorUserbot",
         api_id=env.int("API_ID", None) or 6,
         api_hash=env.str("API_HASH", None) or "eb06d4abfb49dc3eeb1aeb98ae0f581e",
         device_model=env.str("DEVICE_MODEL", None) or "Samsung SM-S931B",
@@ -66,7 +66,7 @@ async def main():
     except git.exc.InvalidGitRepositoryError:
         repo = git.Repo.init()
         origin = repo.create_remote(
-            "origin", "https://github.com/KurimuzonAkuma/Kurimuzon-Userbot"
+            "origin", "https://github.com/suhail-c/Telenator"
         )
         origin.fetch()
         repo.create_head("master", origin.refs.master)

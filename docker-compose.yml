@@ -1,6 +1,6 @@
 services:
   worker:
-    container_name: "KurimuzonUserbot"
+    container_name: "TelenatorUserbot"
     build:
       context: .
     stop_signal: SIGINT

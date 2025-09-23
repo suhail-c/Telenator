@@ -59,9 +59,9 @@ EOL
 }
 
 install_systemd_service() {
-    cat > /etc/systemd/system/Kurimuzon-Userbot.service << EOL
+    cat > /etc/systemd/system/Telenator-Userbot.service << EOL
 [Unit]
-Description=Service for Kurimuzon-Userbot
+Description=Service for Telenator-Userbot
 
 [Service]
 Type=simple
@@ -83,15 +83,15 @@ EOL
     fi
 
     systemctl daemon-reload
-    systemctl start Kurimuzon-Userbot
-    systemctl enable Kurimuzon-Userbot
+    systemctl start Telenator-Userbot
+    systemctl enable Telenator-Userbot
 
     echo
     echo "============================"
-    echo "Kurimuzon-Userbot installed successfully and running now!"
+    echo "Telenator-Userbot installed successfully and running now!"
     echo "Installation type: Systemd service"
-    printf "Start with: \e[0;36msudo systemctl start Kurimuzon-Userbot\e[0m\n"
-    printf "Stop with: \e[0;36msudo systemctl start Kurimuzon-Userbot\e[0m\n"
+    printf "Start with: \e[0;36msudo systemctl start Telenator-Userbot\e[0m\n"
+    printf "Stop with: \e[0;36msudo systemctl start Telenator-Userbot\e[0m\n"
     echo "============================"
 }
 
@@ -104,16 +104,16 @@ install_pm2_service() {
         env PATH="$PATH":"/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $SUDO_USER --hp /home/$SUDO_USER"
     fi
 
-    su -c "pm2 start main.py --name KurimuzonUserbot --interpreter python3" "$SUDO_USER"
+    su -c "pm2 start main.py --name TelenatorUserbot --interpreter python3" "$SUDO_USER"
     su -c "pm2 save" "$SUDO_USER"
 
     echo
     echo "============================"
-    echo "Kurimuzon-Userbot installed successfully and running now!"
+    echo "Telenator-Userbot installed successfully and running now!"
     echo "Installation type: PM2"
-    printf "Start with: \e[0;36mpm2 start KurimuzonUserbot\e[0m\n"
-    printf "Stop with: \e[0;36mpm2 stop KurimuzonUserbot\e[0m\n"
-    echo "Process name: KurimuzonUserbot"
+    printf "Start with: \e[0;36mpm2 start TelenatorUserbot\e[0m\n"
+    printf "Stop with: \e[0;36mpm2 stop TelenatorUserbot\e[0m\n"
+    echo "Process name: TelenatorUserbot"
     echo "============================"
 }
 
@@ -152,13 +152,13 @@ install_docker_service() {
 
     echo
     echo "============================"
-    echo "Kurimuzon-Userbot installed successfully!"
+    echo "Telenator-Userbot installed successfully!"
     echo "Installation type: Docker"
-    printf 'Start with: \e[0;36mdocker start KurimuzonUserbot\e[0m\n'
-    printf 'Stop with: \e[0;36mdocker stop KurimuzonUserbot\e[0m\n'
-    echo "Process name: KurimuzonUserbot"
+    printf 'Start with: \e[0;36mdocker start TelenatorUserbot\e[0m\n'
+    printf 'Stop with: \e[0;36mdocker stop TelenatorUserbot\e[0m\n'
+    echo "Process name: TelenatorUserbot"
     echo "============================"
-    printf 'To continue installation use: \e[0;36mdocker attach KurimuzonUserbot\e[0m\n'
+    printf 'To continue installation use: \e[0;36mdocker attach TelenatorUserbot\e[0m\n'
 }
 
 main () {
@@ -170,8 +170,8 @@ main () {
         install_linux_dependencies
     fi
 
-    if [ -f ".env" ] && [ -f "KurimuzonUserbot.session" ]; then
-        printf "It seems that Kurimuzon-Userbot is already installed.\n"
+    if [ -f ".env" ] && [ -f "TelenatorUserbot.session" ]; then
+        printf "It seems that Telenator-Userbot is already installed.\n"
         exit 1
     fi
 
@@ -181,7 +181,7 @@ main () {
     if [ -x "$(command -v termux-setup-storage)" ]; then
         echo
         echo "============================"
-        echo "Great! Kurimuzon-Userbot installed successfully!"
+        echo "Great! Telenator-Userbot installed successfully!"
         echo "Start with: \"python3 main.py\""
         echo "============================"
     else
@@ -213,7 +213,7 @@ main () {
 
                 echo
                 echo "============================"
-                echo "Great! Kurimuzon-Userbot installed successfully!"
+                echo "Great! Telenator-Userbot installed successfully!"
                 echo "Installation type: Custom"
                 echo "Start with: \"python3 main.py\""
                 echo "============================"
