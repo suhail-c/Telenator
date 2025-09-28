@@ -17,7 +17,7 @@ def get_deleted_messages(chat_id):
     return deleted_messages.get(chat_id, [])
     
 @Client.on_deleted_messages()
-async def deleted_messages(client: Client, messages: List[Message]): 
+async def on_deleted_msg(client: Client, messages: List[Message]): 
     for message in messages:
         store_deleted_message(message.chat.id, message.id)
         
