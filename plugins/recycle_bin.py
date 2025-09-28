@@ -3,6 +3,8 @@ from pyrogram import Client, filters, enums
 from pyrogram.types import Message
 from cachetools import TTLCache
 from utils.filters import command
+from utils.misc import modules_help
+
 
 deleted_messages = TTLCache(maxsize=5000, ttl=86400)
 
@@ -57,6 +59,6 @@ async def recover_messages(client: Client, message: Message):
         else:
             content = text
             await client.send_message("me", f"{caption}\n\n<pre>{content}</pre>")
-        
-        if not content: continue
-     
+
+module = modules_help.add_module("recycle_bin", __file__)
+module.add_command("recover", "Recover recent deleted messages from a chat", "[chat_id]")   
