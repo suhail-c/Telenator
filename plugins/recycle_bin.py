@@ -19,7 +19,7 @@ def get_deleted_messages(chat_id):
 @Client.on_deleted_messages()
 async def on_deleted_msg(client: Client, messages: List[Message]): 
     for message in messages:
-        await send_message("me", message)
+        await client.send_message("me", message)
         store_deleted_message(message.chat.id, message.id)
         
 @Client.on_message(command(["recover"]) & filters.me)        
